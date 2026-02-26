@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Radio Station</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <div class="name"></div>
+          <div class="tag"></div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#listen"></a>
+        <a href="#about"></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="listen" class="card">
+      <div class="cardHead">
+        <h1>Listen Live</h1>
+        <span id="live" class="pill" hidden>LIVE</span>
+      </div>
+
+      <!-- <div class="np">
+        <img id="art" class="art" alt="" />
+        <div class="npMeta">
+          <div class="muted">Now Playing</div>
+          <div id="track" class="track">Loading…</div>
+          <div id="dj" class="muted"></div>
+          <div id="listeners" class="muted"></div>
+        </div>
+      </div> -->
+
+      <div class="now-playing">
+        <img id="art" class="art" alt="" />
+        <div class="now-playing-meta">
+          <div class="muted">Now Playing</div>
+          <div id="track" class="track">Loading…</div>
+          <div id="dj" class="muted"></div>
+          <div id="listeners" class="muted"></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="play" class="btn">Play</button>
+        <button id="stop" class="btn secondary">Stop</button>
+        <audio id="audio" preload="none" crossorigin="anonymous"></audio>
+      </div>
+
+      <details class="advanced">
+        <summary>Advanced</summary>
+        <div class="row">
+          <label>Stream</label>
+          <select id="streamSelect"></select>
+        </div>
+        <div class="muted small">
+          If audio doesn’t play in your browser, try a different stream format (MP3/AAC) if available.
+        </div>
+      </details>
+    </section>
+
+    <section id="about" class="card">
+      <h2>About</h2>
+      <p class="muted">
+        A simple radio station site powered by AzuraCast + live DJs (BUTT) + AutoDJ fallback.
+      </p>
+    </section>
+
+    <footer class="footer muted small">
+      © <span id="year"></span> My Radio Station
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
