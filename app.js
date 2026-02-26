@@ -1,4 +1,4 @@
-const AZURACAST_BASE = "http://REMOVED_IP";
+const AZURACAST_BASE = "";
 const STATION_SHORTCODE = "test_";
 
 const FALLBACK_STREAM_URL = "";
