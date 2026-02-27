@@ -54,9 +54,10 @@ function updateUI(np) {
   const djMix = np?.now_playing?.song;
   const djName = djMix?.artist;
   const showTitle = djMix?.title;
+  const showDescription = djMix?.lyrics;
 
   setText("mix", [djName, showTitle].filter(Boolean).join(" — ") || np?.now_playing?.text || "—");
-
+  setText("mix-description",[showDescription]);
   const isLive = !!np?.live?.is_live;
   livePill.hidden = !isLive;
 

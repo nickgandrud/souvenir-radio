@@ -70,6 +70,7 @@ h1,h2{margin:0}
   border: 1px solid var(--border);
 }
 .mix{font-size:18px; font-weight:800; margin-top:6px}
+.mix-description{font-size:18px; font-weight:800; margin-top:6px}
 .small{font-size:13px}
 
 .controls{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:14px}
