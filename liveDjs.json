@@ -1,5 +1,4 @@
 {
-  "liveDjs": {
     "admin": {
       "djName": "admin",
       "showTitle": "Souvenir Shop",
@@ -10,8 +9,5 @@
         "showTitle": "Souvenir Shop 2",
         "description": "Welcome. This is a test for the description2"
 
-
     }
-
-}
 }
