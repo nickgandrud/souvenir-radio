@@ -1,7 +1,7 @@
 const AZURACAST_BASE = "";
 const STATION_SHORTCODE = "test_";
 
-const FALLBACK_STREAM_URL = "";
+const FALLBACK_STREAM_URL = "/listen/test_/radio.mp3";
 
 // AzuraCast static Now Playing JSON:
 // http(s)://host/api/nowplaying_static/<station_shortcode>.json
@@ -51,22 +51,19 @@ async function fetchNowPlaying() {
 }
 
 function updateUI(np) {
-  const song = np?.now_playing?.song;
-  const artist = song?.artist;
-  const title = song?.title;
+  const djMix = np?.now_playing?.song;
+  const djName = djMix?.artist;
+  const showTitle = djMix?.title;
 
-  setText("track", [artist, title].filter(Boolean).join(" — ") || np?.now_playing?.text || "—");
+  setText("mix", [djName, showTitle].filter(Boolean).join(" — ") || np?.now_playing?.text || "—");
 
   const isLive = !!np?.live?.is_live;
   livePill.hidden = !isLive;
 
-  const djName = np?.live?.streamer_name || np?.live?.streamer;
-  setText("dj", djName ? `DJ: ${djName}` : "");
-
   const listeners = np?.listeners?.current;
   setText("listeners", (typeof listeners === "number") ? `Listeners: ${listeners}` : "");
 
-  setArt(song?.art || song?.art_url, `${artist || ""} ${title || ""}`.trim());
+  setArt(djMix?.art || djMix?.art_url, `${djName || ""} ${showTitle || ""}`.trim());
 }
 
 async function refresh() {
