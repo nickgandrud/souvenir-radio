@@ -1,7 +1,7 @@
-const AZURACAST_BASE = "";
+const AZURACAST_BASE = "http://104.236.123.205";
 const STATION_SHORTCODE = "test_";
 
-const FALLBACK_STREAM_URL = "/listen/test_/radio.mp3";
+const FALLBACK_STREAM_URL = "http://104.236.123.205/listen/test_/radio.mp3";
 
 // AzuraCast static Now Playing JSON:
 // http(s)://host/api/nowplaying_static/<station_shortcode>.json
@@ -81,22 +81,24 @@ async function refresh() {
 }
 
 playBtn.addEventListener("click", async () => {
-  audio.src = FALLBACK_STREAM_URL;
-  console.log("Trying to play:", audio.src);
-  try {
-    await audio.play();
-    playBtn.disabled = true;
-  } catch (e) {
-    console.error(e);
-    alert("Playback failed. Check the stream URL / format.");
+   if (!audio.src) {
+    audio.src = FALLBACK_STREAM_URL;
   }
+  console.log("Trying to play:", audio.src);
+
+  if(audio.paused){
+    try {
+        await audio.play();
+        
+    } catch (e) {
+        console.error(e);
+        alert("Playback failed. Check the stream URL / format.");
+    }
+} else{
+    audio.pause();
+}
 });
 
-stopBtn.addEventListener("click", () => {
-  audio.pause();
-  audio.currentTime = 0;
-  playBtn.disabled = false;
-});
 
 refresh();
 setInterval(refresh, 15000);
