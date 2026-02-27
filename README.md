@@ -1,26 +1,3 @@
-# souvenir-radio
-Website document/how it works
-
-http://REMOVED_IP
-
-
-
-How the <audio> element works
-
-For this website the <audio> element is wrapped in the class controls which has the play and stop button (eventually will have a volume control )
-The <audio> element gets the source (aka the server hosting the music) from the AZURACAST_BASE
-
-
-The <audio> element is a native browser media player.
-
-In the javascript file I have 
-
-
-
-
-
-
-
 Flow of the website when a user gets to it and doesn’t click on anything
 
 1. User gets to the screen. Picture and text are empty in the card. The Code starts top to bottom. Elements are brought from the html to the js as constants (Lines 9-13). The playBtn, stopBtn, and streamSelect are all given event listeners. 
@@ -41,10 +18,3 @@ Flow of the website when a user gets to it and doesn’t click on anything
 Alpha version of site: The website will host a continuous stream of mixes that have been already broadcasted. The mixes will be stored in 
 
 The next step will be to maintain a json file that has the name of the radio shows, description and Djs. I think that I can maintain the images of the stations in azuracast. 
-
-Two test radio shows: 
-DJ: User 1 -  Name: Souvenir Shop - Description: Welcome. This is a test for the description. 
-DJ: User 2 - Name : Souvenir Shop 2 - 	Shop - Test 2
-       
-
-
