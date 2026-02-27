@@ -1,7 +1,7 @@
-const AZURACAST_BASE = "http://REMOVED_IP";
+const AZURACAST_BASE = "";
 const STATION_SHORTCODE = "test_";
 
-const FALLBACK_STREAM_URL = "http://REMOVED_IP/listen/test_/radio.mp3";
+const FALLBACK_STREAM_URL = "";
 
 // AzuraCast static Now Playing JSON:
 // http(s)://host/api/nowplaying_static/<station_shortcode>.json
