@@ -52,20 +52,11 @@
 
       <div class="controls">
         <button id="play" class="btn">Play</button>
-        <button id="stop" class="btn secondary">Stop</button>
+        
         <audio id="audio" preload="none" crossorigin="anonymous"></audio>
       </div>
 
-      <details class="advanced">
-        <summary>Advanced</summary>
-        <div class="row">
-          <label>Stream</label>
-          <select id="streamSelect"></select>
-        </div>
-        <div class="muted small">
-          If audio doesn’t play in your browser, try a different stream format (MP3/AAC) if available.
-        </div>
-      </details>
+      
     </section>
 
     <section id="about" class="card">
@@ -74,10 +65,6 @@
         A simple radio station site powered by AzuraCast + live DJs (BUTT) + AutoDJ fallback.
       </p>
     </section>
-
-    <footer class="footer muted small">
-      © <span id="year"></span> My Radio Station
-    </footer>
   </main>
 
   <script src="app.js"></script>
