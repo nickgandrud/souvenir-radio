@@ -4,66 +4,47 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>My Radio Station</title>
+
+  <!-- ✅ Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Your minimal overrides -->
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <header class="top">
-    <div class="wrap">
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <div class="name"></div>
-          <div class="tag"></div>
+<body class="text-light">
+
+  <main class="container py-4">
+    <section id="listen" class="card border-0 shadow-sm bg-card">
+      <div class="card-body">
+
+        <!-- Header row -->
+        <div class="d-flex align-items-center justify-content-between gap-2">
+          <h1 class="h4 mb-0">Listen Live</h1>
+          <!-- keep your existing hidden toggle -->
+          <span id="live" class="pill" hidden>LIVE</span>
         </div>
-      </div>
-      <nav class="nav">
-        <a href="#listen"></a>
-        <a href="#about"></a>
-      </nav>
-    </div>
-  </header>
 
-  <main class="wrap">
-    <section id="listen" class="card">
-      <div class="cardHead">
-        <h1>Listen Live</h1>
-        <span id="live" class="pill" hidden>LIVE</span>
-      </div>
+        <!-- Now playing row -->
+        <div class="d-flex align-items-start gap-3 mt-3">
+          <img id="art" class="art rounded" alt="" />
 
-      <!-- <div class="np">
-        <img id="art" class="art" alt="" />
-        <div class="npMeta">
-          <div class="muted">Now Playing</div>
-          <div id="track" class="track">Loading…</div>
-          <div id="dj" class="muted"></div>
-          <div id="listeners" class="muted"></div>
+          <div class="flex-grow-1">
+            <div class="text-muted small">Now Playing</div>
+            <div id="mix" class="mix mt-1">Loading…</div>
+            <div id="mix-description" class="mix-description mt-2"></div>
+            <div id="listeners" class="text-muted small mt-2"></div>
+
+            <div class="d-flex align-items-center gap-2 mt-3 flex-wrap">
+              <button id="play" class="btn btn-primary fw-bold px-4">Play</button>
+              <audio id="audio" preload="none" crossorigin="anonymous"></audio>
+            </div>
+          </div>
         </div>
-      </div> -->
 
-      <div class="now-playing">
-        <img id="art" class="art" alt="" />
-        <div class="now-playing-meta">
-          <div class="muted">Now Playing</div>
-          <div id="mix" class="mix">Loading…</div>
-          <div id="mix-description" class="mix-description"></div>
-          <div id="listeners" class="muted"></div>
-        </div>
       </div>
-
-      <div class="controls">
-        <button id="play" class="btn">Play</button>
-        
-        <audio id="audio" preload="none" crossorigin="anonymous"></audio>
-      </div>
-
-      
-    </section>
-
-    <section id="about" class="card">
-      <h2>About</h2>
-      <p class="muted">
-        A simple radio station site powered by AzuraCast + live DJs (BUTT) + AutoDJ fallback.
-      </p>
     </section>
   </main>
 
