@@ -61,8 +61,7 @@ function updateUI(np) {
   const isLive = !!np?.live?.is_live;
   livePill.hidden = !isLive;
 
-  const listeners = np?.listeners?.current;
-  setText("listeners", (typeof listeners === "number") ? `Listeners: ${listeners}` : "");
+  
 
   if(isLive){
     const liveKey = np?.live?.streamer_name || "";
@@ -112,24 +111,32 @@ async function refresh() {
   }
 }
 
-playBtn.addEventListener("click", async () => {
-   if (!audio.src) {
-    audio.src = FALLBACK_STREAM_URL;
-  }
-  console.log("Trying to play:", audio.src);
-
-  if(audio.paused){
-    try {
-        await audio.play();
-        
-    } catch (e) {
-        console.error(e);
-        alert("Playback failed. Check the stream URL / format.");
-    }
-} else{
-    audio.pause();
+function setPlayIcon(isPlaying) {
+  const icon = playBtn.querySelector("i");
+  if (!icon) return;
+  icon.className = isPlaying ? "bi bi-pause-fill fs-4" : "bi bi-play-fill fs-4";
 }
+
+playBtn.addEventListener("click", async () => {
+  if (!audio.src) audio.src = FALLBACK_STREAM_URL;
+
+  if (audio.paused) {
+    try {
+      await audio.play();
+      setPlayIcon(true);
+    } catch (e) {
+      console.error(e);
+      alert("Playback failed. Check the stream URL / format.");
+    }
+  } else {
+    audio.pause();
+    setPlayIcon(false);
+  }
 });
+
+// Keep icon in sync if playback changes
+audio.addEventListener("play", () => setPlayIcon(true));
+audio.addEventListener("pause", () => setPlayIcon(false));
 
 await loadLiveDjShows();
 refresh();
