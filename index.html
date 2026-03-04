@@ -11,38 +11,48 @@
     rel="stylesheet"
   />
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
   <!-- Your minimal overrides -->
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="text-light">
-
+<body class="bg-white text-dark">
+<header class="py-4 text-center">
+  <img src="/Souviner.png" alt="Souvenir Radio" class="site-logo img-fluid">
+</header>
   <main class="container py-4">
-    <section id="listen" class="card border-0 shadow-sm bg-card">
+    <section id="listen" class="card border-0 shadow-sm bg-card mx-auto w-75">
       <div class="card-body">
 
         <!-- Header row -->
         <div class="d-flex align-items-center justify-content-between gap-2">
-          <h1 class="h4 mb-0">Listen Live</h1>
           <!-- keep your existing hidden toggle -->
-          <span id="live" class="pill" hidden>LIVE</span>
         </div>
 
         <!-- Now playing row -->
-        <div class="d-flex align-items-start gap-3 mt-3">
-          <img id="art" class="art rounded" alt="" />
+         <div class="d-flex align-items-start gap-3 mt-3 flex-column flex-md-row">
+          <!-- Art + overlay button -->
+          <div class="art-wrap position-relative">
+            <span id="live" class="live-badge" hidden>LIVE <span class="live-dot" aria-hidden="true"></span>
+            </span>
+            <img id="art" class="art rounded" alt="" />
+
+            <button id="play" class="btn btn-primary art-control" type="button" aria-label="Play/Pause">
+              <i class="bi bi-play-fill fs-4"></i>
+            </button>
+          </div>
 
           <div class="flex-grow-1">
-            <div class="text-muted small">Now Playing</div>
-            <div id="mix" class="mix mt-1">Loading…</div>
-            <div id="mix-description" class="mix-description mt-2"></div>
+           
+            <div id="mix" class="mix mt-1 text-center">Loading…</div>
+            <div id="mix-description" class="mix-description mt-2 text-center"></div>
             <div id="listeners" class="text-muted small mt-2"></div>
 
-            <div class="d-flex align-items-center gap-2 mt-3 flex-wrap">
-              <button id="play" class="btn btn-primary fw-bold px-4">Play</button>
-              <audio id="audio" preload="none" crossorigin="anonymous"></audio>
-            </div>
+            <!-- audio stays here (button moved onto art) -->
+            <audio id="audio" preload="none" crossorigin="anonymous"></audio>
           </div>
         </div>
+       
 
       </div>
     </section>
