@@ -14,6 +14,57 @@ const playBtn = document.getElementById("play");
 const stopBtn = document.getElementById("stop");
 const livePill = document.getElementById("live");
 
+const volumeFab = document.getElementById("volumeFab");
+const volumePanel = document.getElementById("volumePanel");
+const volumeSlider = document.getElementById("volumeSlider");
+const muteBtn = document.getElementById("muteBtn");
+
+function setVolumeOpen(open) {
+  volumeFab.classList.toggle("is-open", open);
+  volumePanel.setAttribute("aria-hidden", String(!open));
+}
+
+function toggleVolumeOpen() {
+  setVolumeOpen(!volumeFab.classList.contains("is-open"));
+}
+
+function updateVolumeIcon() {
+  const icon = muteBtn.querySelector("i");
+  if (!icon) return;
+
+  if (audio.muted || audio.volume === 0) {
+    icon.className = "bi bi-volume-mute-fill";
+  } else if (audio.volume < 0.5) {
+    icon.className = "bi bi-volume-down-fill";
+  } else {
+    icon.className = "bi bi-volume-up-fill";
+  }
+}
+
+// Initialize
+audio.volume = Number(volumeSlider.value);
+updateVolumeIcon();
+setVolumeOpen(false);
+
+// Click icon toggles panel open/closed (and also works as "mute" if you want)
+muteBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  toggleVolumeOpen();
+});
+
+// Change volume
+volumeSlider.addEventListener("input", () => {
+  const v = Number(volumeSlider.value);
+  audio.volume = v;
+  if (v > 0) audio.muted = false;
+  updateVolumeIcon();
+});
+
+// Click outside closes it
+document.addEventListener("click", (e) => {
+  if (!volumeFab.contains(e.target)) setVolumeOpen(false);
+});
+
 let liveDjShows = {}
 
 async function loadLiveDjShows() {
