@@ -34,8 +34,8 @@ body{
 
 
 .art-wrap{
-  flex: 0 0 320px;
-  width: 320px;
+  flex: 0 0 300px;
+  width: 300px;
 }
 
 @media (min-width: 768px){
@@ -150,11 +150,12 @@ body{
   align-items: center;
   gap: 10px;
 
-  padding: 10px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,.92);
-  box-shadow: 0 10px 25px rgba(0,0,0,.18);
+  /* remove pill styling */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 /* Collapsible panel */
@@ -210,4 +211,14 @@ body{
     animation: none;
     padding-left: 0;
   }
+}
+
+.art-wrap{
+  max-width: 100%;
+}
+.art{
+  width: 100%;
+  aspect-ratio: 1 / 1;  /* keeps it square */
+  height: auto;         /* don’t force a fixed height */
+  object-fit: cover;
 }
