@@ -129,7 +129,8 @@ function updateUI(np) {
 
     const liveArt = np?.live?.art;
 
-    setText("mix", `${djName}${showTitle ? " — " + showTitle : ""}`);
+    // setText("mix", `${djName}${showTitle ? " — " + showTitle : ""}`);
+    setText("mix", `${showTitle}${djName ? " with " + djName :""}`);
     setText("mix-description", showDescription);
     setArt(liveArt, `${djName} ${showTitle}`.trim());
 

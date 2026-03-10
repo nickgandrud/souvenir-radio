@@ -222,3 +222,11 @@ body{
   height: auto;         /* don’t force a fixed height */
   object-fit: cover;
 }
+.upcoming-broadcasts-title{
+  letter-spacing: .08em;
+  font-size: 48px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
