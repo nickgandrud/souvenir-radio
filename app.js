@@ -111,9 +111,6 @@ function updateUI(np) {
 
   const isLive = !!np?.live?.is_live;
   livePill.hidden = !isLive;
-
-  
-
   if(isLive){
     const liveKey = np?.live?.streamer_name || "";
     console.log("streamer name " + liveKey);
@@ -144,10 +141,6 @@ function updateUI(np) {
 
   setText("mix", [djName, showTitle].filter(Boolean).join(" — ") || np?.now_playing?.text || "—");
   setText("mix-description",showDescription);
-  
-
-  
-
   setArt(djMix?.art || djMix?.art_url, `${djName || ""} ${showTitle || ""}`.trim());
 }
 
@@ -186,10 +179,111 @@ playBtn.addEventListener("click", async () => {
   }
 });
 
+async function loadSchedule() {
+  try {
+    const res = await fetch("souvenir-schedule.json", { cache: "no-store" });
+    if (!res.ok) throw new Error(`Schedule fetch failed: ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    console.warn("Could not load souvenir-schedule.json", e);
+    return [];
+  }
+}
+
+function formatScheduleDate(startTime, endTime) {
+  const start = new Date(startTime);
+  const end = new Date(endTime);
+
+  const datePart = start.toLocaleDateString(undefined, {
+    month: "long",
+    day: "numeric",
+  });
+
+  const startPart = start.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  const endPart = end.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+    timeZoneName: "short",
+  });
+
+  return `${datePart} • ${startPart} - ${endPart}`;
+}
+
+function renderUpcomingBroadcasts(shows) {
+  const container = document.getElementById("upcoming-broadcasts-list");
+  if (!container) return;
+
+  const now = new Date();
+
+  const upcomingShows = shows
+    .filter((show) => {
+      const start = new Date(show.start_time);
+      return !Number.isNaN(start.getTime()) && start > now;
+    })
+    .sort((a, b) => new Date(a.start_time) - new Date(b.start_time))
+    .slice(0, 3);
+
+  if (!upcomingShows.length) {
+    container.innerHTML = `
+      <div class="col-12">
+        <div class="card bg-card border shadow-sm">
+          <div class="card-body text-center">
+            <p class="mb-0">No upcoming live broadcasts scheduled.</p>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = upcomingShows
+    .map((show) => {
+      const title = show.title || "Upcoming Broadcast";
+      const host = show.host || "";
+      const description = show.description || "";
+      const imageUrl = show.image_url || "";
+      const dateText = formatScheduleDate(show.start_time, show.end_time);
+
+      return `
+        <div class="col-12 col-md-4">
+          <div class="card bg-card border shadow-sm h-100">
+            ${imageUrl ? `<img src="${imageUrl}" class="card-img-top" alt="${title}">` : ""}
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="fw-bold">${title}${host ? ` with ${host}` : ""}</div>
+                <span class="badge text-bg-secondary">SCHEDULED</span>
+              </div>
+
+              <div class="mt-3 small text-muted">
+                ${dateText}
+              </div>
+
+              <p class="mt-3 mb-0 mix-description">
+                ${description}
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+async function initSchedule() {
+  const shows = await loadSchedule();
+  
+  renderUpcomingBroadcasts(shows);
+}
+
 // Keep icon in sync if playback changes
 audio.addEventListener("play", () => setPlayIcon(true));
 audio.addEventListener("pause", () => setPlayIcon(false));
 
 await loadLiveDjShows();
+await initSchedule();
 refresh();
 setInterval(refresh, 15000);

@@ -47,7 +47,7 @@ body{
 
 .art{
   width: 100%;
-  height: 320px;
+  height: 300px;
   object-fit: cover;
   background: #0c1320;
   border: 1px solid var(--border);
@@ -229,4 +229,15 @@ body{
   color: var(--muted);
   padding-bottom: 1em;
   padding-top: 1em;
+}
+header{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+@media (max-width: 576px){
+  header{
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
 }
