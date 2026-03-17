@@ -16,7 +16,7 @@
   <!-- Your minimal overrides -->
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="bg-white text-dark">
+<body class="bg-- text-dark">
 <header class="py-4 text-center">
   <img src="/Souviner.png" alt="Souvenir Radio" class="site-logo img-fluid">
 </header>
@@ -60,7 +60,7 @@
             <div id="mix" class="mix mt-1 text-center">Loading…</div>
             <div id="mix-description" class="mix-description mt-2 text-center"></div>
             <div id="listeners" class="text-muted small mt-2"></div>
-
+ 
             <!-- audio stays here (button moved onto art) -->
             <audio id="audio" preload="none" crossorigin="anonymous"></audio>
           </div>
@@ -70,13 +70,16 @@
       </div>
     </section>
 
-    <section id="upcoming-broadcasts" class="mt-5">
+  <section id="upcoming-broadcasts" class="mt-5">
   <div class="text-center upcoming-broadcasts-title">
     UPCOMING NEXT LIVE BROADCASTS
   </div>
 
-  <div class="row g-3">
-    <!-- Card 1 -->
+  <div id="upcoming-broadcasts-list" class="row g-3 mt-1"></div>
+</section>
+
+  <!-- <div class="row g-3">
+    
     <div class="col-12 col-md-4">
       <div class="card bg-card border shadow-sm h-100">
         <div class="card-body">
@@ -127,35 +130,11 @@
           </p>
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <!-- Card 3 -->
-    <!-- <div class="col-12 col-md-4">
-      <div class="card bg-card border shadow-sm h-100">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-start">
-            <div class="fw-bold">DJ Name</div>
-            <span class="badge text-bg-secondary">SCHEDULED</span>
-          </div>
-
-          <div class="text-muted small mt-1">Show Title</div>
-
-          <div class="mt-3 small text-muted">
-            <i class="bi bi-calendar-event me-1"></i>
-            Day, Month ## • 9:00 PM
-          </div>
-
-          <p class="mt-3 mb-0 mix-description">
-            Short description of the upcoming broadcast goes here. Keep it to 1–3 sentences.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div> -->
-</section>
 
   </main>
-
+      
 <!-- Floating Volume Control (collapsible) -->
 <div class="volume-fab" id="volumeFab" aria-label="Volume control">
   <button class="btn btn-light" id="muteBtn" type="button" aria-label="Volume / Mute">
