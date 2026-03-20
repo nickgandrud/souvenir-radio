@@ -1,11 +1,11 @@
 :root{
-  --bg: #ffffff;
-  --card: #ffffff;          /* card background */
-  --text: #111111;          /* main text */
-  --muted: #6c757d;         /* bootstrap-ish muted */
-  --border: #dee2e6;        /* light border */
-  --accent: #0d6efd;        /* bootstrap primary */
-  --good: #198754;          /* bootstrap success */
+  --bg: #ffc78f;
+  --card: #ffffff;
+  --text: #111111;
+  --muted: #6c757d;
+  --border: #dee2e6;
+  --accent: #0d6efd;
+  --good: #198754;
 }
 
 body{
@@ -14,56 +14,63 @@ body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-/* Card background helper */
 .bg-card{
   background: var(--card);
   border: 1px solid var(--border);
+  border-radius: 0;
 }
 
-/* LIVE pill */
-.pill{
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(25,135,84,.10);
-  border: 1px solid rgba(25,135,84,.35);
-  color: var(--good);
-  font-weight: 800;
-  font-size: 12px;
-  letter-spacing: .08em;
+.card{
+  box-shadow: none !important;
+
 }
 
-
-.art-wrap{
-  flex: 0 0 300px;
-  width: 300px;
+.site-logo{
+  max-width: 150px;
+  height: auto;
 }
 
-@media (min-width: 768px){
-  .art-wrap{
-    flex: 0 0 420px;
-    width: 420px;
+header{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+@media (max-width: 576px){
+  header{
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
   }
+}
+
+/* NOW PLAYING */
+.listen-card{
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.listen-row{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.art-wrap,
+.listen-meta{
+  width: 100%;
+  max-width: 420px;
 }
 
 .art{
   width: 100%;
-  height: 300px;
+  aspect-ratio: 1 / 1;
+  height: auto;
   object-fit: cover;
   background: #0c1320;
   border: 1px solid var(--border);
+  border-radius: 0;
 }
 
-/* Bigger on desktop */
-@media (min-width: 768px){
-  .art-wrap{
-    width: 420px;
-  }
-  .art{
-    height: 420px;
-  }
-}
-
-/* Overlay play/pause button bottom-left */
 .art-control{
   position: absolute;
   left: 12px;
@@ -74,50 +81,44 @@ body{
   display: grid;
   place-items: center;
   padding: 0;
-  box-shadow: 0 10px 20px rgba(0,0,0,.35);
+}
+
+.listen-meta{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .mix{
+  width: 100%;
   font-size: 18px;
   font-weight: 800;
+  text-align: center;
 }
 
-/* If your JSON uses \n, this renders line breaks */
 .mix-description{
+  width: 100%;
+  height: 180px;
+  overflow-y: auto;
+  padding-right: 6px;
   white-space: pre-line;
   color: var(--muted);
   font-size: 14px;
   line-height: 1.5;
+  text-align: center;
+  scrollbar-gutter: stable;
 }
 
-/* Optional: keep your brand button look while still using bootstrap .btn */
-/* Brand primary button */
-.btn-primary{
-  background: var(--accent);
-  border-color: var(--accent);
-}
-.btn-primary:hover{
-  filter: brightness(1.03);
-}
-
-.site-logo{
-  max-width: 150px;   /* adjust to taste */
-  height: auto;
-}
-/* LIVE badge overlay on art */
 .live-badge{
   position: absolute;
   top: 12px;
   left: 12px;
   z-index: 2;
-
   display: inline-flex;
   align-items: center;
   gap: 8px;
-
   padding: 6px 10px;
   border-radius: 999px;
-
   background: rgba(255,255,255,.9);
   border: 1px solid var(--border);
   color: #111;
@@ -126,12 +127,11 @@ body{
   letter-spacing: .10em;
 }
 
-/* Blinking red dot */
 .live-dot{
   width: 10px;
   height: 10px;
   border-radius: 999px;
-  background: #dc3545; /* Bootstrap danger red */
+  background: #dc3545;
   animation: liveBlink 2s infinite;
 }
 
@@ -140,25 +140,31 @@ body{
   50%, 100% { opacity: 0.25; }
 }
 
+/* Buttons */
+.btn-primary{
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-primary:hover{
+  filter: brightness(1.03);
+}
+
+/* Volume */
 .volume-fab{
   position: fixed;
   right: 16px;
   bottom: 16px;
   z-index: 1050;
-
   display: inline-flex;
   align-items: center;
   gap: 10px;
-
-  /* remove pill styling */
   padding: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
-  box-shadow: none;
 }
 
-/* Collapsible panel */
 .volume-panel{
   overflow: hidden;
   width: 0;
@@ -167,7 +173,6 @@ body{
   transition: width .25s ease, opacity .2s ease, transform .25s ease;
 }
 
-/* When expanded */
 .volume-fab.is-open .volume-panel{
   width: 140px;
   opacity: 1;
@@ -178,14 +183,17 @@ body{
   width: 140px;
 }
 
-/* Smaller on phones */
 @media (max-width: 576px){
-  .volume-fab.is-open .volume-panel{ width: 110px; }
-  #volumeSlider{ width: 110px; }
+  .volume-fab.is-open .volume-panel{
+    width: 110px;
+  }
+
+  #volumeSlider{
+    width: 110px;
+  }
 }
 
-
-
+/* Ticker */
 .ticker{
   white-space: nowrap;
   overflow: hidden;
@@ -199,13 +207,11 @@ body{
   font-weight: 600;
 }
 
-/* Right-to-left motion */
 @keyframes tickerScroll{
-  0%   { transform: translateX(0); }
+  0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
 
-/* Respect people who prefer reduced motion */
 @media (prefers-reduced-motion: reduce){
   .ticker-item{
     animation: none;
@@ -213,15 +219,6 @@ body{
   }
 }
 
-.art-wrap{
-  max-width: 100%;
-}
-.art{
-  width: 100%;
-  aspect-ratio: 1 / 1;  /* keeps it square */
-  height: auto;         /* don’t force a fixed height */
-  object-fit: cover;
-}
 .upcoming-broadcasts-title{
   letter-spacing: .08em;
   font-size: 48px;
@@ -230,14 +227,7 @@ body{
   padding-bottom: 1em;
   padding-top: 1em;
 }
-header{
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
 
-@media (max-width: 576px){
-  header{
-    padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
-  }
+#listen .card-body{
+  padding-bottom: .0em;
 }
