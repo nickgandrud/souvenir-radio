@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My Radio Station</title>
+  <link rel="icon" type="image/png" href="/Souviner.png">
+  <title>Souvenir Radio</title>
 
   <!-- ✅ Bootstrap CSS -->
   <link
@@ -34,41 +35,35 @@
 
   <main class="container py-4">
 
-    <section id="listen" class="card border-0 shadow-sm bg-card mx-auto w-75">
-      <div class="card-body">
-  
-        <!-- Header row -->
-        <div class="d-flex align-items-center justify-content-between gap-2">
+    <section id="listen" class="card border bg-card mx-auto listen-card">
+  <div class="card-body">
+    <div class="listen-row">
+      <div class="art-wrap position-relative">
+        <span id="live" class="live-badge" hidden>
+          LIVE <span class="live-dot" aria-hidden="true"></span>
+        </span>
 
-        </div>
+        <img id="art" class="art" alt="" />
 
-        <!-- Now playing row -->
-         <div class="d-flex gap-3 mt-3 flex-column flex-md-row align-items-center align-items-md-start">
-          <!-- Art + overlay button -->
-          <div class="art-wrap position-relative">
-            <span id="live" class="live-badge" hidden>LIVE <span class="live-dot" aria-hidden="true"></span>
-            </span>
-            <img id="art" class="art rounded" alt="" />
-
-            <button id="play" class="btn btn-primary art-control" type="button" aria-label="Play/Pause">
-              <i class="bi bi-play-fill fs-4"></i>
-            </button>
-          </div>
-
-          <div class="flex-grow-1">
-           
-            <div id="mix" class="mix mt-1 text-center">Loading…</div>
-            <div id="mix-description" class="mix-description mt-2 text-center"></div>
-            <div id="listeners" class="text-muted small mt-2"></div>
- 
-            <!-- audio stays here (button moved onto art) -->
-            <audio id="audio" preload="none" crossorigin="anonymous"></audio>
-          </div>
-        </div>
-       
-
+        <button
+          id="play"
+          class="btn btn-primary art-control"
+          type="button"
+          aria-label="Play/Pause"
+        >
+          <i class="bi bi-play-fill fs-4"></i>
+        </button>
       </div>
-    </section>
+
+      <div class="listen-meta">
+        <div id="mix" class="mix mt-2">Loading…</div>
+        <div id="mix-description" class="mix-description mt-2"></div>
+        <div id="listeners" class="text-muted small mt-2 text-center"></div>
+        <audio id="audio" preload="none" crossorigin="anonymous"></audio>
+      </div>
+    </div>
+  </div>
+</section>
 
   <section id="upcoming-broadcasts" class="mt-5">
   <div class="text-center upcoming-broadcasts-title">
