@@ -56,8 +56,18 @@
       </div>
 
       <div class="listen-meta">
-        <div id="mix" class="mix mt-2">Loading…</div>
-        <div id="mix-description" class="mix-description mt-2"></div>
+                  <button
+            id="mix-toggle"
+            class="mix-toggle mt-2"
+            type="button"
+            aria-expanded="false"
+            aria-controls="mix-description"
+          >
+            <span id="mix" class="mix">Loading…</span>
+       
+          </button>
+
+          <div id="mix-description" class="mix-description mt-2" hidden></div>
         <div id="listeners" class="text-muted small mt-2 text-center"></div>
         <audio id="audio" preload="none" crossorigin="anonymous"></audio>
       </div>

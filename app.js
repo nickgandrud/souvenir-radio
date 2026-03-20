@@ -1,8 +1,8 @@
 
-const AZURACAST_BASE = "Removed IP";
+const AZURACAST_BASE = "http://104.236.123.205";
 const STATION_SHORTCODE = "test_";
 
-const FALLBACK_STREAM_URL = "Removed IP";
+const FALLBACK_STREAM_URL = "http://104.236.123.205/listen/test_/radio.mp3";
 
 // AzuraCast static Now Playing JSON:
 // http(s)://host/api/nowplaying_static/<station_shortcode>.json
@@ -18,11 +18,24 @@ const volumeFab = document.getElementById("volumeFab");
 const volumePanel = document.getElementById("volumePanel");
 const volumeSlider = document.getElementById("volumeSlider");
 const muteBtn = document.getElementById("muteBtn");
+const mixToggle = document.getElementById("mix-toggle");
+const mixDescription = document.getElementById("mix-description");
 
 function setVolumeOpen(open) {
   volumeFab.classList.toggle("is-open", open);
   volumePanel.setAttribute("aria-hidden", String(!open));
 }
+
+function setMixDescriptionExpanded(expanded) {
+  mixToggle.setAttribute("aria-expanded", String(expanded));
+  mixDescription.hidden = !expanded;
+}
+
+mixToggle.addEventListener("click", () => {
+  const expanded = mixToggle.getAttribute("aria-expanded") === "true";
+  setMixDescriptionExpanded(!expanded);
+});
+setMixDescriptionExpanded(false);
 
 function toggleVolumeOpen() {
   setVolumeOpen(!volumeFab.classList.contains("is-open"));
@@ -282,6 +295,7 @@ async function initSchedule() {
 // Keep icon in sync if playback changes
 audio.addEventListener("play", () => setPlayIcon(true));
 audio.addEventListener("pause", () => setPlayIcon(false));
+
 
 await loadLiveDjShows();
 await initSchedule();

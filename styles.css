@@ -90,10 +90,10 @@ header{
 }
 
 .mix{
-  width: 100%;
   font-size: 18px;
   font-weight: 800;
   text-align: center;
+  margin: 0;
 }
 
 .mix-description{
@@ -230,4 +230,32 @@ header{
 
 #listen .card-body{
   padding-bottom: .0em;
+}
+
+.mix-toggle{
+  width: 100%;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: center;
+}
+
+.mix-toggle:focus-visible{
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.mix-chevron{
+  font-size: 14px;
+  transition: transform 0.2s ease;
+}
+
+.mix-toggle[aria-expanded="true"] .mix-chevron{
+  transform: rotate(180deg);
 }
