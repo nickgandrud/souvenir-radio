@@ -6,158 +6,89 @@
   <link rel="icon" type="image/png" href="/Souviner.png">
   <title>Souvenir Radio</title>
 
-  <!-- ✅ Bootstrap CSS -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
     rel="stylesheet"
   />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-  <!-- Your minimal overrides -->
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="bg-- text-dark">
-<header class="py-4 text-center">
-  <img src="/Souviner.png" alt="Souvenir Radio" class="site-logo img-fluid">
-</header>
 
-                <!-- Scrolling Ticker -->
-        <div class="container">
-          <div class="ticker-wrap my-3">
-            <div class="ticker" id="ticker">
-              <span class="ticker-item">
-               Twin Cities Based Internet Community Radio - Connecting Local Music Scenes All In One Place - You Are Currently Listening To An Archived Radio Show - Check Down Below For The Next Live Show 
-              </span>
+<body class="bg-- text-dark">
+  
+  <main>
+    <section class="listen-shell">
+      <div class="container">
+        <section id="listen" class="card border bg-card mx-auto listen-card">
+          <div class="card-body">
+            <div class="listen-row">
+              <button
+                id="artWrap"
+                class="art-wrap art-trigger position-relative"
+                type="button"
+                aria-label="Play or pause stream"
+              >
+                <span id="live" class="live-badge" hidden>
+                  LIVE <span class="live-dot" aria-hidden="true"></span>
+                </span>
+
+                <img id="art" class="art" alt="" />
+
+                <div class="art-overlay" id="artOverlay" aria-hidden="true">
+                  <div class="art-overlay-button">
+                    <i id="artOverlayIcon" class="bi bi-play-fill"></i>
+                  </div>
+                </div>
+              </button>
+
+              <div class="listen-meta">
+                <button
+                  id="mix-toggle"
+                  class="mix-toggle mt-2"
+                  type="button"
+                  aria-expanded="true"
+                  aria-controls="mix-description"
+                >
+                  <span id="mix" class="mix">Loading…</span>
+                </button>
+
+                <div id="mix-description" class="mix-description mt-2"></div>
+                <div id="listeners" class="text-muted small mt-2 text-center"></div>
+                <audio id="audio" preload="none" crossorigin="anonymous"></audio>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
+      </div>
+    </section>
 
-  <main class="container py-4">
-
-    <section id="listen" class="card border bg-card mx-auto listen-card">
-  <div class="card-body">
-    <div class="listen-row">
-      <div class="art-wrap position-relative">
-        <span id="live" class="live-badge" hidden>
-          LIVE <span class="live-dot" aria-hidden="true"></span>
-        </span>
-
-        <img id="art" class="art" alt="" />
-
-        <button
-          id="play"
-          class="btn btn-primary art-control"
-          type="button"
-          aria-label="Play/Pause"
-        >
-          <i class="bi bi-play-fill fs-4"></i>
-        </button>
+    <section id="upcoming-broadcasts" class="container mt-5">
+      <div class="text-center upcoming-broadcasts-title">
+        UPCOMING NEXT LIVE BROADCASTS
       </div>
 
-      <div class="listen-meta">
-                  <button
-            id="mix-toggle"
-            class="mix-toggle mt-2"
-            type="button"
-            aria-expanded="false"
-            aria-controls="mix-description"
-          >
-            <span id="mix" class="mix">Loading…</span>
-       
-          </button>
-
-          <div id="mix-description" class="mix-description mt-2" hidden></div>
-        <div id="listeners" class="text-muted small mt-2 text-center"></div>
-        <audio id="audio" preload="none" crossorigin="anonymous"></audio>
-      </div>
-    </div>
-  </div>
-</section>
-
-  <section id="upcoming-broadcasts" class="mt-5">
-  <div class="text-center upcoming-broadcasts-title">
-    UPCOMING NEXT LIVE BROADCASTS
-  </div>
-
-  <div id="upcoming-broadcasts-list" class="row g-3 mt-1"></div>
-</section>
-
-  <!-- <div class="row g-3">
-    
-    <div class="col-12 col-md-4">
-      <div class="card bg-card border shadow-sm h-100">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-start">
-            <div class="fw-bold">Souvenir Store Show with Beab</div>
-          </div>
-          <div class="mt-3 small text-muted">
-            March 21st • 6:00 PM - 8:00 PM CST
-          </div>
-          <p class="mt-3 mb-0 mix-description">
-            Beab playing a variety of music
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-md-4">
-      <div class="card bg-card border shadow-sm h-100">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-start">
-            <div class="fw-bold">Souvenir Store Show with Beab & Special Guest DJ</div>
-          </div>
-          <div class="mt-3 small text-muted">
-            March 23rd • 6:00 PM - 8:00 PM CST
-          </div>
-          <p class="mt-3 mb-0 mix-description">
-            Beab playing a variety of music
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-md-4">
-      <div class="card bg-card border shadow-sm h-100">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-start">
-            <div class="fw-bold">DJ Name</div>
-            <span class="badge text-bg-secondary">SCHEDULED</span>
-          </div>
-
-          <div class="text-muted small mt-1">Show Title</div>
-
-          <div class="mt-3 small text-muted">
-            <i class="bi bi-calendar-event me-1"></i>
-            Day, Month ## • 8:00 PM
-          </div>
-
-          <p class="mt-3 mb-0 mix-description">
-            Short description of the upcoming broadcast goes here. Keep it to 1–3 sentences.
-          </p>
-        </div>
-      </div>
-    </div> -->
-
-
+      <div id="upcoming-broadcasts-list" class="row g-3 mt-1"></div>
+    </section>
   </main>
-      
-<!-- Floating Volume Control (collapsible) -->
-<div class="volume-fab" id="volumeFab" aria-label="Volume control">
-  <button class="btn btn-light" id="muteBtn" type="button" aria-label="Volume / Mute">
-    <i class="bi bi-volume-up-fill"></i>
-  </button>
 
-  <div class="volume-panel" id="volumePanel" aria-hidden="true">
-    <input
-      id="volumeSlider"
-      type="range"
-      min="0"
-      max="1"
-      step="0.01"
-      value="1"
-      aria-label="Volume"
-    />
+  <div class="volume-fab" id="volumeFab" aria-label="Volume control">
+    <button class="btn btn-light" id="muteBtn" type="button" aria-label="Volume / Mute">
+      <i class="bi bi-volume-up-fill"></i>
+    </button>
+
+    <div class="volume-panel" id="volumePanel" aria-hidden="true">
+      <input
+        id="volumeSlider"
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value="1"
+        aria-label="Volume"
+      />
+    </div>
   </div>
-</div>
 
   <script type="module" src="app.js"></script>
 </body>
