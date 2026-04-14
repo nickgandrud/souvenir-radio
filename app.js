@@ -1,17 +1,11 @@
-
 const AZURACAST_BASE = "";
-const STATION_SHORTCODE = "test_";
+const STATION_SHORTCODE = "";
 
 const FALLBACK_STREAM_URL = "";
 
-// AzuraCast static Now Playing JSON:
-// http(s)://host/api/nowplaying_static/<station_shortcode>.json
-// Docs: https://www.azuracast.com/docs/developers/now-playing-data/  (see "Static Now Playing JSON File") :contentReference[oaicite:2]{index=2}
-
-
 const audio = document.getElementById("audio");
-const playBtn = document.getElementById("play");
-const stopBtn = document.getElementById("stop");
+const artWrap = document.getElementById("artWrap");
+const artOverlayIcon = document.getElementById("artOverlayIcon");
 const livePill = document.getElementById("live");
 
 const volumeFab = document.getElementById("volumeFab");
@@ -31,11 +25,7 @@ function setMixDescriptionExpanded(expanded) {
   mixDescription.hidden = !expanded;
 }
 
-mixToggle.addEventListener("click", () => {
-  const expanded = mixToggle.getAttribute("aria-expanded") === "true";
-  setMixDescriptionExpanded(!expanded);
-});
-setMixDescriptionExpanded(false);
+setMixDescriptionExpanded(true);
 
 function toggleVolumeOpen() {
   setVolumeOpen(!volumeFab.classList.contains("is-open"));
@@ -59,7 +49,7 @@ audio.volume = Number(volumeSlider.value);
 updateVolumeIcon();
 setVolumeOpen(false);
 
-// Click icon toggles panel open/closed (and also works as "mute" if you want)
+// Click icon toggles panel open/closed
 muteBtn.addEventListener("click", (e) => {
   e.stopPropagation();
   toggleVolumeOpen();
@@ -78,7 +68,7 @@ document.addEventListener("click", (e) => {
   if (!volumeFab.contains(e.target)) setVolumeOpen(false);
 });
 
-let liveDjShows = {}
+let liveDjShows = {};
 
 async function loadLiveDjShows() {
   try {
@@ -90,7 +80,10 @@ async function loadLiveDjShows() {
   }
 }
 
-function setText(id, text) { document.getElementById(id).textContent = text || ""; }
+function setText(id, text) {
+  document.getElementById(id).textContent = text || "";
+}
+
 function setArt(url, alt) {
   const art = document.getElementById("art");
 
@@ -101,7 +94,6 @@ function setArt(url, alt) {
     return;
   }
 
-  // If URL is relative, make it absolute to AzuraCast
   if (!/^https?:\/\//i.test(url)) {
     url = `${AZURACAST_BASE}${url.startsWith("/") ? "" : "/"}${url}`;
   }
@@ -111,36 +103,32 @@ function setArt(url, alt) {
   art.alt = alt || "Album art";
 }
 
-//Asynchronously fetches the static json from the radio broadcast on Azuracast
 async function fetchNowPlaying() {
   const url = `${AZURACAST_BASE}/api/nowplaying_static/${STATION_SHORTCODE}.json`;
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) throw new Error(`NowPlaying fetch failed: ${res.status}`);
-  
+
   return res.json();
 }
 
 function updateUI(np) {
-
   const isLive = !!np?.live?.is_live;
   livePill.hidden = !isLive;
-  if(isLive){
+
+  if (isLive) {
     const liveKey = np?.live?.streamer_name || "";
     console.log("streamer name " + liveKey);
     const profile = liveDjShows[liveKey] || {};
 
     console.log(liveDjShows);
     console.log(profile);
+
     const djName = np?.live?.streamer_name || "Live DJ";
-
     const showTitle = profile?.showTitle || "Live Broadcast";
-
     const showDescription = profile?.description || "";
-
     const liveArt = np?.live?.art;
 
-    // setText("mix", `${djName}${showTitle ? " — " + showTitle : ""}`);
-    setText("mix", `${showTitle}${djName ? " with " + djName :""}`);
+    setText("mix", `${showTitle}${djName ? " with " + djName : ""}`);
     setText("mix-description", showDescription);
     setArt(liveArt, `${djName} ${showTitle}`.trim());
 
@@ -153,7 +141,7 @@ function updateUI(np) {
   const showDescription = djMix?.lyrics;
 
   setText("mix", [djName, showTitle].filter(Boolean).join(" — ") || np?.now_playing?.text || "—");
-  setText("mix-description",showDescription);
+  setText("mix-description", showDescription);
   setArt(djMix?.art || djMix?.art_url, `${djName || ""} ${showTitle || ""}`.trim());
 }
 
@@ -170,12 +158,11 @@ async function refresh() {
 }
 
 function setPlayIcon(isPlaying) {
-  const icon = playBtn.querySelector("i");
-  if (!icon) return;
-  icon.className = isPlaying ? "bi bi-pause-fill fs-4" : "bi bi-play-fill fs-4";
+  if (!artOverlayIcon) return;
+  artOverlayIcon.className = isPlaying ? "bi bi-pause-fill" : "bi bi-play-fill";
 }
 
-playBtn.addEventListener("click", async () => {
+async function togglePlayback() {
   if (!audio.src) audio.src = FALLBACK_STREAM_URL;
 
   if (audio.paused) {
@@ -190,6 +177,10 @@ playBtn.addEventListener("click", async () => {
     audio.pause();
     setPlayIcon(false);
   }
+}
+
+artWrap.addEventListener("click", async () => {
+  await togglePlayback();
 });
 
 async function loadSchedule() {
@@ -288,14 +279,12 @@ function renderUpcomingBroadcasts(shows) {
 
 async function initSchedule() {
   const shows = await loadSchedule();
-  
   renderUpcomingBroadcasts(shows);
 }
 
 // Keep icon in sync if playback changes
 audio.addEventListener("play", () => setPlayIcon(true));
 audio.addEventListener("pause", () => setPlayIcon(false));
-
 
 await loadLiveDjShows();
 await initSchedule();

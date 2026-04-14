@@ -1,10 +1,10 @@
 :root{
-  --bg: #ffc78f;
-  --card: #ffffff;
-  --text: #111111;
-  --muted: #6c757d;
-  --border: #dee2e6;
-  --accent: #0d6efd;
+  --bg: #828282;
+  --card: #dbdbdb;
+  --text: #ffffff;
+  --muted: #ffffff;
+  --border:  #7ba4da;
+  --accent:  #7ba4da;
   --good: #198754;
 }
 
@@ -12,6 +12,11 @@ body{
   background: var(--bg);
   color: var(--text);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  margin: 0;
+}
+
+main{
+  min-height: 100svh;
 }
 
 .bg-card{
@@ -22,30 +27,19 @@ body{
 
 .card{
   box-shadow: none !important;
-
-}
-
-.site-logo{
-  max-width: 150px;
-  height: auto;
-}
-
-header{
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-@media (max-width: 576px){
-  header{
-    padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
-  }
 }
 
 /* NOW PLAYING */
+.listen-shell{
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+}
+
 .listen-card{
   width: 100%;
-  max-width: 450px;
+  max-width: 400px;
   margin: 0 auto;
 }
 
@@ -53,12 +47,22 @@ header{
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
 }
 
 .art-wrap,
 .listen-meta{
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
+}
+
+.art-trigger{
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
 }
 
 .art{
@@ -69,24 +73,65 @@ header{
   background: #0c1320;
   border: 1px solid var(--border);
   border-radius: 0;
+  display: block;
 }
 
-.art-control{
+.art-wrap::after{
+  content: "";
   position: absolute;
-  left: 12px;
-  bottom: 12px;
-  border-radius: 999px;
-  width: 56px;
-  height: 56px;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.42);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.art-overlay{
+  position: absolute;
+  inset: 0;
   display: grid;
   place-items: center;
-  padding: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.art-overlay-button{
+  width: 84px;
+  height: 84px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #111;
+  
+}
+
+.art-overlay-button i{
+  font-size: 42px;
+  line-height: 1;
+}
+
+.art-wrap:hover::after,
+.art-wrap:hover .art-overlay,
+.art-wrap:focus-visible::after,
+.art-wrap:focus-visible .art-overlay{
+  opacity: 1;
+}
+
+.art-wrap:focus-visible{
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
 }
 
 .listen-meta{
+  width: 100%;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .mix{
@@ -98,11 +143,11 @@ header{
 
 .mix-description{
   width: 100%;
-  height: 180px;
+  max-height: 180px;
   overflow-y: auto;
-  padding-right: 6px;
+  padding: 8px 6px;
   white-space: pre-line;
-  color: var(--muted);
+  color: black;
   font-size: 14px;
   line-height: 1.5;
   text-align: center;
@@ -113,14 +158,12 @@ header{
   position: absolute;
   top: 12px;
   left: 12px;
-  z-index: 2;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(255,255,255,.9);
-  border: 1px solid var(--border);
   color: #111;
   font-weight: 800;
   font-size: 12px;
@@ -191,31 +234,36 @@ header{
   #volumeSlider{
     width: 110px;
   }
-}
 
-/* Ticker */
-.ticker{
-  white-space: nowrap;
-  overflow: hidden;
-}
+  .listen-card{
+    max-width: 320px;
+  }
 
-.ticker-item{
-  display: inline-block;
-  padding-left: 100%;
-  animation: tickerScroll 18s linear infinite;
-  color: var(--muted);
-  font-weight: 600;
-}
+  .art-wrap,
+  .listen-meta{
+    max-width: 320px;
+  }
 
-@keyframes tickerScroll{
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
+  .art-overlay-button{
+    width: 72px;
+    height: 72px;
+  }
 
-@media (prefers-reduced-motion: reduce){
-  .ticker-item{
-    animation: none;
-    padding-left: 0;
+  .art-overlay-button i{
+    font-size: 36px;
+  }
+
+  .mix{
+    font-size: 16px;
+  }
+
+  .mix-description{
+    max-height: 140px;
+    font-size: 13px;
+  }
+
+  .upcoming-broadcasts-title{
+    font-size: 30px;
   }
 }
 
@@ -229,7 +277,10 @@ header{
 }
 
 #listen .card-body{
-  padding-bottom: .0em;
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .mix-toggle{
@@ -242,7 +293,7 @@ header{
   background: transparent;
   border: 0;
   padding: 0;
-  cursor: pointer;
+  cursor: default;
   text-align: center;
 }
 
