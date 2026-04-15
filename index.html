@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="icon" type="image/png" href="/Souviner.png">
+  <link rel="icon" type="image/png" href="/Souviner2.png">
   <title>Souvenir Radio</title>
 
   <link
@@ -16,11 +16,30 @@
 </head>
 
 <body class="bg-- text-dark">
-  
+
+  <header class="site-header">
+    <div class="container-fluid site-header-inner">
+      <a href="#listen" class="site-brand">
+        <span>souvenir radio</span>
+        <img src="/Souviner2.png" alt="" class="site-brand-icon">
+        </a>
+      
+
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="#listen">Now Playing</a>
+        <a href="#upcoming-broadcasts">Upcoming Broadcasts</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="site-header-spacer" aria-hidden="true"></div>
+    </div>
+  </header>
+
   <main>
-    <section class="listen-shell">
+    <section id="listen" class="listen-shell">
       <div class="container">
-        <section id="listen" class="card border bg-card mx-auto listen-card">
+        <section class="card border bg-card mx-auto listen-card">
           <div class="card-body">
             <div class="listen-row">
               <button
@@ -64,12 +83,48 @@
     </section>
 
     <section id="upcoming-broadcasts" class="container mt-5">
-      <div class="text-center upcoming-broadcasts-title">
-        UPCOMING NEXT LIVE BROADCASTS
-      </div>
+  <div class="text-center upcoming-broadcasts-title">
+    Upcoming Broadcasts
+  </div>
 
-      <div id="upcoming-broadcasts-list" class="row g-3 mt-1"></div>
-    </section>
+  <div id="upcoming-broadcasts-list" class="row g-3 mt-1"></div>
+</section>
+
+<section id="about" class="container mt-5">
+  <div class="text-center upcoming-broadcasts-title">
+    ABOUT
+  </div>
+
+  <div class="row g-3 mt-1">
+    <div class="col-12">
+      <div class="card bg-card border shadow-sm h-100">
+        <div class="card-body">
+          <p class="mb-0 about-contact-text">
+            Souvenir Radio is a Twin Cities based internet radio station. Featuring music and other things.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="container mt-5 mb-5">
+  <div class="text-center upcoming-broadcasts-title">
+    CONTACT
+  </div>
+
+  <div class="row g-3 mt-1">
+    <div class="col-12">
+      <div class="card bg-card border shadow-sm h-100">
+        <div class="card-body">
+          <p class="mb-0 about-contact-text">
+            Add email here. 
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
   </main>
 
   <div class="volume-fab" id="volumeFab" aria-label="Volume control">
