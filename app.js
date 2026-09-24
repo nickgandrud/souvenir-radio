@@ -1,7 +1,6 @@
-const AZURACAST_BASE = "";
-const STATION_SHORTCODE = "";
-
-const FALLBACK_STREAM_URL = "";
+const AZURACAST_BASE = import.meta.env.VITE_AZURACAST_BASE;
+const STATION_SHORTCODE = import.meta.env.VITE_STATION_SHORTCODE;
+const FALLBACK_STREAM_URL = import.meta.env.VITE_STREAM_URL;
 
 const audio = document.getElementById("audio");
 const artWrap = document.getElementById("artWrap");
@@ -74,14 +73,20 @@ async function loadLiveDjShows() {
   try {
     const res = await fetch("/liveDjs.json", { cache: "no-store" });
     if (res.ok) liveDjShows = await res.json();
-    console.log(liveDjShows);
+
   } catch (e) {
-    console.warn("Could not load shows.json", e);
+    console.warn("Could not load liveDjs.json", e);
   }
 }
 
 function setText(id, text) {
-  document.getElementById(id).textContent = text || "";
+  const element = document.getElementById(id);
+
+  if(!element){
+    console.warn(`Element #${id} not found`);
+    return;
+  }
+  element.textContent = text || "";
 }
 
 function setArt(url, alt) {
@@ -117,11 +122,9 @@ function updateUI(np) {
 
   if (isLive) {
     const liveKey = np?.live?.streamer_name || "";
-    console.log("streamer name " + liveKey);
+
     const profile = liveDjShows[liveKey] || {};
 
-    console.log(liveDjShows);
-    console.log(profile);
 
     const djName = np?.live?.streamer_name || "Live DJ";
     const showTitle = profile?.showTitle || "Live Broadcast";
@@ -148,12 +151,11 @@ function updateUI(np) {
 async function refresh() {
   try {
     const np = await fetchNowPlaying();
-    console.log(np);
-    console.log("LIVE fields:", np?.live);
     updateUI(np);
   } catch (e) {
-    console.warn(e);
-    setText("track", "Metadata not loading yet (check config).");
+    console.warn("Unable to load now-playing metadata:", e);
+    setText("mix", "Unable to load station metadata.");
+    setText("mix-description", "Please try again later.");
   }
 }
 
@@ -217,6 +219,81 @@ function formatScheduleDate(startTime, endTime) {
   return `${datePart} • ${startPart} - ${endPart}`;
 }
 
+function escapeICS(text = "") {
+  return String(text)
+    .replace(/\\/g, "\\\\")
+    .replace(/\n/g, "\\n")
+    .replace(/,/g, "\\,")
+    .replace(/;/g, "\\;");
+}
+
+function formatICSDate(dateString) {
+  const date = new Date(dateString);
+
+  const pad = (num) => String(num).padStart(2, "0");
+
+  return (
+    date.getUTCFullYear() +
+    pad(date.getUTCMonth() + 1) +
+    pad(date.getUTCDate()) +
+    "T" +
+    pad(date.getUTCHours()) +
+    pad(date.getUTCMinutes()) +
+    pad(date.getUTCSeconds()) +
+    "Z"
+  );
+}
+
+function slugify(text = "") {
+  return String(text)
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function downloadCalendarEvent(show) {
+  const title = show.title || "Upcoming Broadcast";
+  const host = show.host ? ` with ${show.host}` : "";
+  const description = show.description || "";
+  const location = show.location || "souvenir radio";
+  const start = formatICSDate(show.start_time);
+  const end = formatICSDate(show.end_time);
+
+  const uid = `${Date.now()}-${Math.random().toString(36).slice(2)}@souvenir.fm`;
+  const stamp = formatICSDate(new Date().toISOString());
+
+  const ics = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//souvenir.fm//Upcoming Shows//EN",
+    "CALSCALE:GREGORIAN",
+    "BEGIN:VEVENT",
+    `UID:${uid}`,
+    `DTSTAMP:${stamp}`,
+    `DTSTART:${start}`,
+    `DTEND:${end}`,
+    `SUMMARY:${escapeICS(title + host)}`,
+    `DESCRIPTION:${escapeICS(description)}`,
+    `LOCATION:${escapeICS(location)}`,
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+
+  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${slugify(title)}.ics`;
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 function renderUpcomingBroadcasts(shows) {
   const container = document.getElementById("upcoming-broadcasts-list");
   if (!container) return;
@@ -245,7 +322,7 @@ function renderUpcomingBroadcasts(shows) {
   }
 
   container.innerHTML = upcomingShows
-    .map((show) => {
+    .map((show, index) => {
       const title = show.title || "Upcoming Broadcast";
       const host = show.host || "";
       const description = show.description || "";
@@ -257,24 +334,42 @@ function renderUpcomingBroadcasts(shows) {
           <div class="card bg-card border shadow-sm h-100">
             ${imageUrl ? `<img src="${imageUrl}" class="card-img-top" alt="${title}">` : ""}
             <div class="card-body">
-              <div class="d-flex justify-content-between align-items-start">
+              <div class="text-center">
                 <div class="fw-bold">${title}${host ? ` with ${host}` : ""}</div>
-                <span class="badge text-bg-secondary">SCHEDULED</span>
+               
               </div>
 
-              <div class="mt-3 small text-muted">
+              <div class=" text-center mt-3 small text-muted">
                 ${dateText}
+                ${description}
               </div>
-
               <p class="mt-3 mb-0 mix-description">
                 ${description}
               </p>
+
+              <button
+                class="btn btn-dark btn-sm mt-3 add-calendar-btn"
+                type="button"
+                data-show-index="${index}"
+              >
+                Add to Calendar
+              </button>
             </div>
           </div>
         </div>
       `;
     })
     .join("");
+
+  const calendarButtons = container.querySelectorAll(".add-calendar-btn");
+
+  calendarButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = Number(button.dataset.showIndex);
+      const show = upcomingShows[index];
+      if (show) downloadCalendarEvent(show);
+    });
+  });
 }
 
 async function initSchedule() {
