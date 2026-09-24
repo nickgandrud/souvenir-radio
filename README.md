@@ -1,20 +1,216 @@
-Flow of the website when a user gets to it and doesn’t click on anything
+# Souvenir Radio
 
-1. User gets to the screen. Picture and text are empty in the card. The Code starts top to bottom. Elements are brought from the html to the js as constants (Lines 9-13). The playBtn, stopBtn, and streamSelect are all given event listeners. 
-2. The first method is hit in the automatic flow refresh(). This is basically how the app will function given that it needs to update text and pictures  
-3. The first thing you will see when the refresh method is hit is that the function is asynchronous. This is because inside the method there is an await delcartive to for the method fetchNowPlaying() which fetches the static json from the radio broadcast on Azura cast. Because this is async, the code underneath refresh() will continue even while it is waiting to retrieve that static json file.  
-    1. Inside of the async fetchNowPlaying, a url is created that hits the exposed Now Playing Api endpoint. Azuracast write the api endpoint to a static json file, hence why the endpoint ends in .json. The next line of code generates a response object using a javasciprt fetch method and the contracted url. This is also asynchronous since it needs to wait for a response for the json from azuracast. The json object azuracast provides has important data like if the station is online, how many listeners, the cover art name of what is being played and the url for the stream playback. Note: Later in the implementation I will need to fetch data such as DJ Name, Dj Show Name and Information about the show.
-    2. After the response is returned from azuracast, the fetchNowPlaying returns the response as a json object. This json object is kept as np or now playing. We then see that the method updateUI gets called with np as a parameter.
-    3. Inside of the updateUI function, we see that  it parses the np/nowplaying json object into 3 const/vars: song, artist, title. After the json is parsed we now see that the function setText is called. It takes in an id and text. The id is what div will be replaced (track) and text is what will replace it (Artist and track name) . Note: Like above, this will need to get changed later to include what I had listed. 
-    4. Underneath we check if the station/dj is live and display whether or not it is live. Everything up until setArt is kinda the same.
-    5. Set art takes in the url from the json that has the cover art info and sets it in art.src = url. We are now at the end of the update ui function. 
-4. This is the end of the refresh. The next step is to understand the play button that streams the audio form the server to the computer
+Souvenir Radio is a web based internet radio project focused on showcasing DJs, artists, mixes, and live broadcasts
+from the Twin Cities music community
 
-5. When the play button is clicked, the addEventListner method is called. It first checks to see if the audio element of the website has the source of the streaming mp3 file. If it doesn’t, the audio.src will be set to the streaming mp3 url that is hosted on Azura cast. After that check, the code sees if the audio is paused. Since this is the first time the user is clicking on the button, it is true it is paused, so the code will then attempt to play the streaming audio. It will then exit.  When the user wants to pause, they will click on the button again. Because the audio is not paused, the else flag will be hit and the audio will be paused. 
+The project combines frontend with an AzuraCast streaming Backend. Listeners can play the station from the website,
+view information about the currently playing archived mix or live DJ and see any upcoming broadcasts.
+
+## Features
+
+* Continous internet radio playback via AzuraCast
+* Detection for live and archived broadcasts
+* Now-playing metadata that is dynamic
+* DJ & show info for broadcasts
+* Dynamic broadcast schedule
+* Downloadable schedule 
+
+## Architecture
+
+Souvenir Radio Web Frontend 
+```
+                 ┌─────────────────────┐
+                 │   Souvenir Radio    │
+                 │    Web Frontend     │
+                 │                     │
+                 │ HTML / CSS / JS     │
+                 │       Vite          │
+                 └──────────┬──────────┘
+                            │
+                            │ HTTP / JSON
+                            ▼
+                 ┌─────────────────────┐
+                 │     AzuraCast       │
+                 │                     │
+                 │ Now Playing API     │
+                 │ Audio Streaming     │
+                 │ Live DJ Metadata    │
+                 └──────────┬──────────┘
+                            │
+                 ┌──────────┴──────────┐
+                 │                     │
+                 ▼                     ▼
+          Archived Mixes          Live Broadcast
+           Liquidsoap               DJ / BUTT
+
+```
+AzuraCast handles the station & stream infrastructure
+
+When there isnt a live broadcast coming in via BUTT -> Azuracast, an archived mix
+is played from an automated program on AzuraCast (Liquid Soap Dj)
+When a DJ connects to the Azuracast live source, the frontend detects
+the live broadcast through the Now Playing Api and updated the frontend.
+
+## How Now Playing Works
+
+The frontend periodically requests AzuraCast's static Now Playing endpoint:
+
+/api/nowplaying_static/{station_shortcode}.json
+
+The application refreshes this data every 15 seconds.
+
+For archived broadcasts, Souvenir Radio reads metadata from:
+
+now_playing.song.artist
+now_playing.song.title
+now_playing.song.lyrics
+now_playing.song.art
+
+These values are used to display the DJ or artist name, mix title, description, and artwork.
+
+For live broadcasts, the application checks:
+
+live.is_live
+
+When the station is live, live.streamer_name is used to identify the DJ. Additional show information is loaded from liveDjs.json.
+
+A live DJ entry has the following structure:
+````
+{
+"dj-name": {
+"showTitle": "Example Show",
+"description": "Description of the DJ and radio show."
+}
+}
+````
+Live artwork is provided by AzuraCast through the live broadcast metadata.
+
+## Upcoming Broadcasts
+
+Upcoming programs are read from:
+
+souvenir-schedule.json
+
+Each schedule entry can contain:
+
+````
+  { "title": "Example Show",
+  "host": "DJ Name",
+  "description": "Description of the broadcast.",
+  "image_url": "https://example.com/image.jpg",
+  "start_time": "2026-10-10T19:00:00-05:00",
+  "end_time": "2026-10-10T21:00:00-05:00"
+}
+````
+
+The frontend filters out past broadcasts, sorts future broadcasts chronologically, and displays the next three scheduled shows.
 
 
+## Technology
 
 
-Alpha version of site: The website will host a continuous stream of mixes that have been already broadcasted. The mixes will be stored in 
+| Technology    | Purpose                                        |   
+|---------------|------------------------------------------------|
+| JavaScript    | Frontend application logic and API integration |  
+| HTML          | Page structure and audio player                | 
+| CSS           | Custom Styling                                 | 
+| Vite          | Local dev & production build tooling           |
+| Bootstrap     | Layout and utility classes                     |
+| AzuraCast     | Internet radio management and streaming        |
+| BUTT          | Live DJ audio source connection                |
+| Digital Ocean | Cloud infrastrucutre hosting AzuraCast         |
 
-The next step will be to maintain a json file that has the name of the radio shows, description and Djs. I think that I can maintain the images of the stations in azuracast. 
+### Local Development
+#### Prerequisites
+
+Install Node.js and npm.
+
+Check your installation with:
+
+```
+node --version
+npm --version
+```
+
+Clone the repository
+
+```
+git clone https://github.com/nickgandrud/souvenir-radio.git
+cd souvenir-radio
+```
+Install dependencies
+```
+npm install
+```
+Configure the application
+
+Create a .env.local file in the project root:
+```
+VITE_AZURACAST_BASE=https://your-azuracast-server
+VITE_STATION_SHORTCODE=your_station_shortcode
+VITE_STREAM_URL=https://your-stream-url
+```
+These values configure the frontend's connection to the AzuraCast instance.
+
+Vite environment variables prefixed with VITE_ are exposed to the browser and should not contain passwords, API keys, or other secrets.
+
+Start the development server
+```
+npm run dev
+```
+
+Vite will provide a local development URL, typically:
+
+```
+http://localhost:5173
+```
+
+Project Structure
+```
+souvenir-radio/
+├── index.html
+├── app.js
+├── styles.css
+├── liveDjs.json
+├── souvenir-schedule.json
+├── package.json
+├── package-lock.json
+├── fonts/
+└── assets/
+```
+
+index.html contains the application layout and audio element.
+
+app.js handles AzuraCast communication, player controls, live-DJ detection, metadata updates, and upcoming broadcasts.
+
+styles.css contains the responsive design and player styling.
+
+liveDjs.json stores additional metadata for live DJs and radio programs.
+
+souvenir-schedule.json stores upcoming broadcast information.
+
+### Player Flow
+
+When the application starts, it loads the live-DJ configuration and upcoming broadcast schedule.
+
+It then requests current station information from AzuraCast and determines whether the station is playing an archived broadcast or receiving a live DJ stream.
+
+The appropriate title, description, artwork, and LIVE indicator are rendered in the player.
+
+Clicking the artwork starts or pauses the station's audio stream.
+
+The Now Playing data is refreshed every 15 seconds so the page can update automatically when the station changes from archived programming to a live broadcast or when the currently playing mix changes.
+
+### Project Goals
+
+Souvenir Radio began as a way to explore the technical infrastructure behind independently operated internet radio while building a platform that could eventually support the Twin Cities music community.
+
+The project has involved work across frontend development, API integration, cloud infrastructure, streaming audio, metadata management, live broadcasting, and responsive web design.
+
+Future development may include expanded scheduling tools, improved DJ management, production deployment of the public site, and additional station-management automation.
+
+### Status
+
+Souvenir Radio is currently under active development.
+
+The web player and AzuraCast integration are functional locally, while additional work is planned around deployment, scheduling, content, and production configuration.
