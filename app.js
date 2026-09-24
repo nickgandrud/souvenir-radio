@@ -1,7 +1,6 @@
-const AZURACAST_BASE = "http://104.236.123.205";
-const STATION_SHORTCODE = "test_";
-
-const FALLBACK_STREAM_URL = "http://104.236.123.205/listen/test_/radio.mp3";
+const AZURACAST_BASE = import.meta.env.VITE_AZURACAST_BASE;
+const STATION_SHORTCODE = import.meta.env.VITE_STATION_SHORTCODE;
+const FALLBACK_STREAM_URL = import.meta.env.VITE_STREAM_URL;
 
 const audio = document.getElementById("audio");
 const artWrap = document.getElementById("artWrap");
@@ -74,14 +73,20 @@ async function loadLiveDjShows() {
   try {
     const res = await fetch("/liveDjs.json", { cache: "no-store" });
     if (res.ok) liveDjShows = await res.json();
-    console.log(liveDjShows);
+
   } catch (e) {
-    console.warn("Could not load shows.json", e);
+    console.warn("Could not load liveDjs.json", e);
   }
 }
 
 function setText(id, text) {
-  document.getElementById(id).textContent = text || "";
+  const element = document.getElementById(id);
+
+  if(!element){
+    console.warn(`Element #${id} not found`);
+    return;
+  }
+  element.textContent = text || "";
 }
 
 function setArt(url, alt) {
@@ -117,11 +122,9 @@ function updateUI(np) {
 
   if (isLive) {
     const liveKey = np?.live?.streamer_name || "";
-    console.log("streamer name " + liveKey);
+
     const profile = liveDjShows[liveKey] || {};
 
-    console.log(liveDjShows);
-    console.log(profile);
 
     const djName = np?.live?.streamer_name || "Live DJ";
     const showTitle = profile?.showTitle || "Live Broadcast";
@@ -148,12 +151,11 @@ function updateUI(np) {
 async function refresh() {
   try {
     const np = await fetchNowPlaying();
-    console.log(np);
-    console.log("LIVE fields:", np?.live);
     updateUI(np);
   } catch (e) {
-    console.warn(e);
-    setText("track", "Metadata not loading yet (check config).");
+    console.warn("Unable to load now-playing metadata:", e);
+    setText("mix", "Unable to load station metadata.");
+    setText("mix-description", "Please try again later.");
   }
 }
 
