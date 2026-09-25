@@ -7,10 +7,10 @@
       
     
     },
-    "Dj Two": {
-        "djName": "Dj Two",
-        "showTitle": "Souvenir Shop 2",
-        "description": "Welcome. This is a test for the description2",
+    "dj-nick": {
+        "djName": "dj-nick",
+        "showTitle": "Souvenir Store Show",
+        "description": "Hi there, this is Nick. I am currently in the development of a small twincities based internet radio station.",
         "shortDescription": "This is a test description thats short"
 
     }
