@@ -1,3 +1,9 @@
+### Live Broadcast 
+![Live Broadcast](Live%20Broadcast.png)
+### Archived Broadcast
+![Archived Broadcast](Archived%20Broadcast.png)
+### Schedule
+![Schedule](Schedule.png)
 # Souvenir Radio
 
 Souvenir Radio is a web based internet radio project focused on showcasing DJs, artists, mixes, and live broadcasts
@@ -211,6 +217,80 @@ Future development may include expanded scheduling tools, improved DJ management
 
 ### Status
 
-Souvenir Radio is currently under active development.
+Souvenir Radio is currently private project rather than a public production service at the moment.
 
-The web player and AzuraCast integration are functional locally, while additional work is planned around deployment, scheduling, content, and production configuration.
+Core functionality implemented includes:
+
+Hosted AzuraCast radio infrastructure
+
+Automated archived programming
+
+Live DJ broadcasting
+
+Multiple streamer accounts
+
+Dynamic live/archive UI states
+
+AzuraCast API integration
+
+Upcoming show scheduling
+
+Responsive radio player UI
+
+### Known Deployment Limitation
+
+The current development AzuraCast instance is accessed directly through its server rather than through a production hostname.
+
+Following an AzuraCast container update, the instance regenerated its default self-signed TLS certificate. Modern browsers reject this certificate for normal cross-origin API requests because it is not issued for the server's public address.
+
+As a result, local browser development may require manually trusting the development certificate.
+
+A future production deployment would use a dedicated hostname and trusted TLS certificate before the service is publicly launched.
+
+This limitation affects the deployment environment rather than the underlying streaming, scheduling, or metadata functionality.
+
+### What I Learned
+
+This project provided hands-on experience working across application development and infrastructure, including:
+
+Integrating a frontend application with a third-party REST API
+
+Working with asynchronous JavaScript and periodically refreshed data
+
+Designing UI behavior around live application state
+
+Hosting containerized services on DigitalOcean
+
+Configuring AzuraCast and Liquidsoap
+
+Creating and managing authenticated live streaming accounts
+
+Broadcasting audio with BUTT and Icecast
+
+Troubleshooting Docker container updates
+
+Diagnosing HTTPS/TLS certificate failures
+
+Debugging cross-origin browser behavior
+
+Separating frontend application configuration from radio infrastructure
+
+### Future Improvements
+
+Potential future work includes:
+
+Production deployment at souvenir.fm
+
+Dedicated hostname for the AzuraCast service
+
+Trusted HTTPS/TLS configuration
+
+Expanded live DJ management
+
+Automated schedule synchronization
+
+Improved error handling for unavailable streams
+
+Additional mobile UI improvements
+
+Public launch for Twin Cities DJs and artists
